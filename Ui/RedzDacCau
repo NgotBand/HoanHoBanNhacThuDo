@@ -25,15 +25,15 @@ local redzlib = {
 		},
 		Tet = {
 			["Color Hub 1"] = ColorSequence.new({
-				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
-				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 215, 0)),
-				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))
+				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 215, 0)),
+				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(255, 140, 0)),
+				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 215, 0))
 			}),
-			["Color Hub 2"] = Color3.fromRGB(255, 0, 0),
-			["Color Stroke"] = Color3.fromRGB(255, 215, 0),
-			["Color Theme"] = Color3.fromRGB(255, 215, 0),
-			["Color Text"] = Color3.fromRGB(255, 255, 255),
-			["Color Dark Text"] = Color3.fromRGB(200, 200, 200),
+			["Color Hub 2"] = Color3.fromRGB(255, 215, 0),
+			["Color Stroke"] = Color3.fromRGB(255, 0, 0),
+			["Color Theme"] = Color3.fromRGB(255, 69, 0),
+			["Color Text"] = Color3.fromRGB(0, 0, 0),
+			["Color Dark Text"] = Color3.fromRGB(50, 50, 50),
 			["Image"] = "rbxassetid://85772312780607" -- Placeholder, thay bằng ID hình ảnh Tet nếu có
 		},
 		Darker = {
@@ -367,7 +367,7 @@ local redzlib = {
 	Save = {
 		UISize = {550, 380},
 		TabSize = 160,
-		Theme = "LavenderField"
+		Theme = "Tet"
 	},
 	Settings = {},
 	Connection = {},
