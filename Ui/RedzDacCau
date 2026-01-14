@@ -367,7 +367,7 @@ local redzlib = {
 	Save = {
 		UISize = {550, 380},
 		TabSize = 160,
-		Theme = "Tet"
+		Theme = "Autumn"
 	},
 	Settings = {},
 	Connection = {},
@@ -1261,6 +1261,7 @@ local SetProps, SetChildren, InsertTheme, Create do
 				if rawget(decode, "UISize") then redzlib.Save["UISize"] = decode["UISize"] end
 				if rawget(decode, "TabSize") then redzlib.Save["TabSize"] = decode["TabSize"] end
 				if rawget(decode, "Theme") and VerifyTheme(decode["Theme"]) then redzlib.Save["Theme"] = decode["Theme"] end
+				if rawget(decode, "Scale") then redzlib.Save["Scale"] = decode["Scale"] end
 			end
 		end
 	end
@@ -1689,7 +1690,7 @@ function redzlib:SetTheme(NewTheme)
 	SaveJson("redz library V5.json", redzlib.Save)
 	Theme = redzlib.Themes[NewTheme]
 	
-	Comnection:FireConnection("ThemeChanged", NewTheme)
+	Connection:FireConnection("ThemeChanged", NewTheme)
 	table.foreach(redzlib.Instances, function(_,Val)
 		if Val.Type == "Gradient" then
 			Val.Instance.Color = Theme["Color Hub 1"]
@@ -1712,6 +1713,8 @@ end
 function redzlib:SetScale(NewScale)
 	NewScale = ViewportSize.Y / math.clamp(NewScale, 300, 2000)
 	UIScale, ScreenGui.Scale.Scale = NewScale, NewScale
+	redzlib.Save.Scale = NewScale
+	SaveJson("redz library V5.json", redzlib.Save)
 end
 
 function redzlib:MakeWindow(Configs)
@@ -1735,7 +1738,11 @@ function redzlib:MakeWindow(Configs)
 			end
 		end
 	end;LoadFile()
-	
+
+	if redzlib.Save.Scale then
+		redzlib:SetScale(redzlib.Save.Scale)
+	end
+
 	local UISizeX, UISizeY = unpack(redzlib.Save.UISize)
 	local MainFrame = InsertTheme(Create("ImageButton", ScreenGui, {
 		Size = UDim2.fromOffset(UISizeX, UISizeY),
@@ -2674,7 +2681,7 @@ function redzlib:MakeWindow(Configs)
 			function Dropdown:Visible(...) Funcs:ToggleVisible(Button, ...) end
 			function Dropdown:Destroy() Button:Destroy() end
 			function Dropdown:Callback(...) Funcs:InsertCallback(Callback, ...)(Selected) end
-			
+
 			function Dropdown:Add(...)
 				local NewOptions = {...}
 				if type(NewOptions[1]) == "table" then
@@ -2715,6 +2722,10 @@ function redzlib:MakeWindow(Configs)
 				elseif type(Val1) == "function" then
 					Callback = Val1
 				end
+			end
+			function Dropdown:SetSelected(Value)
+				Selected = Value
+				UpdateSelected()
 			end
 			return Dropdown
 		end
@@ -3018,6 +3029,104 @@ function redzlib:MakeWindow(Configs)
 	
 	CloseButton.Activated:Connect(Window.CloseBtn)
 	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
+
+	local SettingsTab = Window:MakeTab({
+		Title = "Settings",
+		Icon = "settings"
+	})
+
+	local ThemeOptions = {}
+	for Name,_ in pairs(redzlib.Themes) do
+		table.insert(ThemeOptions, Name)
+	end
+
+	local ThemeDropdown = SettingsTab:AddDropdown({
+		Name = "Theme",
+		Options = ThemeOptions,
+		Default = redzlib.Save.Theme,
+		Callback = function(Value)
+			redzlib:SetTheme(Value)
+			ThemeDropdown:SetSelected(Value)
+		end
+	})
+
+	SettingsTab:AddDropdown({
+		Name = "UI Scale",
+		Options = {"Small", "Normal", "Big"},
+		Default = "Normal",
+		Callback = function(Value)
+			local scales = {Small = 550, Normal = 450, Big = 350}
+			redzlib:SetScale(scales[Value])
+		end
+	})
+
+	SettingsTab:AddSection("Info")
+
+	SettingsTab:AddDiscordInvite({
+		Title = "Horizon | Dac Cau Hub",
+		Desc = "Join our discord community to receive information about the next updates and more!",
+		Logo = "rbxassetid://138072662094067",
+		Invite = "http://discord.gg/V9xq5t5UhM"
+	})
+
+	SettingsTab:AddButton({
+		Name = "TikTok Link",
+		Callback = function()
+			setclipboard("https://tiktok.com/@example")
+		end
+	})
+
+	SettingsTab:AddButton({
+		Name = "Facebook Link",
+		Callback = function()
+			setclipboard("https://facebook.com/example")
+		end
+	})
+
+	SettingsTab:AddSection("Executor Pc")
+
+	SettingsTab:AddButton({
+		Name = "Get Executor Solara(pc)",
+		Callback = function()
+			setclipboard("https://api.getsolara.gg/")
+		end
+	})
+
+	SettingsTab:AddButton({
+		Name = "Get Executor Velocity",
+		Callback = function()
+			setclipboard("https://realvelocity.xyz/")
+		end
+	})
+
+	SettingsTab:AddButton({
+		Name = "Get Executor Xeno(pc)",
+		Callback = function()
+			setclipboard("https://www.xeno.onl/")
+		end
+	})
+
+	SettingsTab:AddButton({
+		Name = "Get Executor Bunni(Pc)",
+		Callback = function()
+			setclipboard("https://wearedevs.net/d/Bunni")
+		end
+	})
+
+	SettingsTab:AddButton({
+		Name = "Get Executor Drift(pc)",
+		Callback = function()
+			setclipboard("https://wearedevs.net/d/Drift")
+		end
+	})
+
+	SettingsTab:AddButton({
+		Name = "Get Executor TNG",
+		Callback = function()
+			setclipboard("https://tngexploit.vercel.app/")
+		end
+	})
+
 	return Window
 end
 
