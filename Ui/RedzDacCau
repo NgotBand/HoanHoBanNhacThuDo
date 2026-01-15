@@ -1444,7 +1444,7 @@ local function CreateTween(Configs)
 	local NewVal = Configs[3] or Configs.NewVal
 	local Time = Configs[4] or Configs.Time or 0.5
 	local TweenWait = Configs[5] or Configs.wait or false
-	local TweenInfo = TweenInfo.new(Time, Enum.EasingStyle.Quint)
+	local TweenInfo = TweenInfo.new(Time, Enum.EasingStyle.Sine)
 	
 	local Tween = TweenService:Create(Instance, TweenInfo, {[Prop] = NewVal})
 	Tween:Play()
@@ -2097,7 +2097,7 @@ function redzlib:MakeWindow(Configs)
 		local isSmall = NDuration == 1
 		local NotifyFrame = Create("Frame", ScreenGui, {
 			Size = isSmall and UDim2.new(0, 150, 0, 40) or UDim2.new(0, 300, 0, 80),
-			Position = isSmall and UDim2.new(1, -160, 1, -50) or UDim2.new(1, -320, 0, 10),
+			Position = isSmall and UDim2.new(1, 10, 1, -50) or UDim2.new(1, -320, 0, 10),
 			BackgroundColor3 = Theme["Color Hub 2"],
 			BackgroundTransparency = 0.2
 		})Make("Corner", NotifyFrame, UDim.new(0, 8))
@@ -2123,9 +2123,9 @@ function redzlib:MakeWindow(Configs)
 			BackgroundTransparency = 1
 		}), "DarkText")
 
-		CreateTween({NotifyFrame, "Position", isSmall and UDim2.new(1, -10, 1, -50) or UDim2.new(1, -10, 0, 10), 0.5})
+		CreateTween({NotifyFrame, "Position", isSmall and UDim2.new(1, -160, 1, -50) or UDim2.new(1, -10, 0, 10), isSmall and 0.7 or 0.5})
 		task.wait(NDuration)
-		CreateTween({NotifyFrame, "Position", isSmall and UDim2.new(1, -160, 1, -50) or UDim2.new(1, -320, 0, 10), 0.5, true})
+		CreateTween({NotifyFrame, "Position", isSmall and UDim2.new(1, 10, 1, -50) or UDim2.new(1, -320, 0, 10), 0.5, true})
 		NotifyFrame:Destroy()
 	end
 	function Window:SelectTab(TabSelect)
