@@ -1683,13 +1683,13 @@ function redzlib:GetIcon(index)
 	return firstMatch or index
 end
 
-function redzlib:SetTheme(NewTheme)
+function redzlib:SetTheme(NewTheme, NoSave)
 	if not VerifyTheme(NewTheme) then return end
-	
+
 	redzlib.Save.Theme = NewTheme
-	SaveJson("redz library V5.json", redzlib.Save)
+	if not NoSave then SaveJson("redz library V5.json", redzlib.Save) end
 	Theme = redzlib.Themes[NewTheme]
-	
+
 	Connection:FireConnection("ThemeChanged", NewTheme)
 	table.foreach(redzlib.Instances, function(_,Val)
 		if Val.Type == "Gradient" then
@@ -3172,6 +3172,8 @@ function redzlib:MakeWindow(Configs)
 			setclipboard("https://tngexploit.vercel.app/")
 		end
 	})
+
+	redzlib:SetTheme(redzlib.Save.Theme, true)
 
 	return Window
 end
