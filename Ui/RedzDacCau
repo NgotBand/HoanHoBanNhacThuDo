@@ -34,7 +34,7 @@ local redzlib = {
 			["Color Theme"] = Color3.fromRGB(255, 69, 0),
 			["Color Text"] = Color3.fromRGB(0, 0, 0),
 			["Color Dark Text"] = Color3.fromRGB(50, 50, 50),
-			["Image"] = "rbxassetid://85772312780607" -- Placeholder, thay bằng ID hình ảnh Tet nếu có
+			["Image"] = "rbxassetid://85772312780607"
 		},
 		Darker = {
 			["Color Hub 1"] = ColorSequence.new({
