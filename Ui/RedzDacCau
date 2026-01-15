@@ -2081,6 +2081,52 @@ function redzlib:MakeWindow(Configs)
 		end)
 		return Dialog
 	end
+	function Window:Notify(Configs)
+		local NTitle = Configs[1] or Configs.Title or "Notification"
+		local NText = Configs[2] or Configs.Text or ""
+		local NDuration = Configs[3] or Configs.Duration or 5
+		local NType = Configs[4] or Configs.Type or "Info"
+
+		local colors = {
+			Info = Theme["Color Theme"],
+			Success = Color3.fromRGB(0, 255, 0),
+			Warning = Color3.fromRGB(255, 255, 0),
+			Error = Color3.fromRGB(255, 0, 0)
+		}
+
+		local NotifyFrame = Create("Frame", ScreenGui, {
+			Size = UDim2.new(0, 300, 0, 80),
+			Position = UDim2.new(1, -320, 0, 10),
+			BackgroundColor3 = Theme["Color Hub 2"],
+			BackgroundTransparency = 0.1
+		})Make("Corner", NotifyFrame)Make("Stroke", NotifyFrame)
+
+		local TitleLabel = InsertTheme(Create("TextLabel", NotifyFrame, {
+			Size = UDim2.new(1, -10, 0, 20),
+			Position = UDim2.new(0, 5, 0, 5),
+			Text = NTitle,
+			TextColor3 = colors[NType] or Theme["Color Text"],
+			Font = Enum.Font.GothamBold,
+			TextSize = 14,
+			BackgroundTransparency = 1
+		}), "Text")
+
+		local TextLabel = InsertTheme(Create("TextLabel", NotifyFrame, {
+			Size = UDim2.new(1, -10, 0, 40),
+			Position = UDim2.new(0, 5, 0, 25),
+			Text = NText,
+			TextColor3 = Theme["Color Dark Text"],
+			Font = Enum.Font.Gotham,
+			TextSize = 12,
+			TextWrapped = true,
+			BackgroundTransparency = 1
+		}), "DarkText")
+
+		CreateTween({NotifyFrame, "Position", UDim2.new(1, -10, 0, 10), 0.5})
+		task.wait(NDuration)
+		CreateTween({NotifyFrame, "Position", UDim2.new(1, -320, 0, 10), 0.5, true})
+		NotifyFrame:Destroy()
+	end
 	function Window:SelectTab(TabSelect)
 		if type(TabSelect) == "number" then
 			redzlib.Tabs[TabSelect].func:Enable()
