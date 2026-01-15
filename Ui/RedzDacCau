@@ -367,7 +367,7 @@ local redzlib = {
 	Save = {
 		UISize = {550, 380},
 		TabSize = 160,
-		Theme = "Autumn"
+		Theme = "ForestWhisper"
 	},
 	Settings = {},
 	Connection = {},
@@ -1256,17 +1256,20 @@ local SetProps, SetChildren, InsertTheme, Create do
 	local function Save(file)
 		if readfile and isfile and isfile(file) then
 			local decode = HttpService:JSONDecode(readfile(file))
-			
+	
 			if type(decode) == "table" then
 				if rawget(decode, "UISize") then redzlib.Save["UISize"] = decode["UISize"] end
 				if rawget(decode, "TabSize") then redzlib.Save["TabSize"] = decode["TabSize"] end
-				if rawget(decode, "Theme") and VerifyTheme(decode["Theme"]) then redzlib.Save["Theme"] = decode["Theme"] end
+				if rawget(decode, "Theme") and VerifyTheme(decode["Theme"]) then
+					redzlib.Save["Theme"] = decode["Theme"]
+					print("Loaded theme: " .. tostring(decode["Theme"]))
+				end
 				if rawget(decode, "Scale") then redzlib.Save["Scale"] = decode["Scale"] end
 			end
 		end
 	end
 	
-	pcall(Save, "redz library V5.json")
+	pcall(Save, "redz_library_V5.json")
 end
 
 local Funcs = {} do
@@ -1503,6 +1506,7 @@ local function SaveJson(FileName, save)
 	if writefile then
 		local json = HttpService:JSONEncode(save)
 		writefile(FileName, json)
+		print("Saved to file: " .. FileName .. " with theme: " .. tostring(save.Theme))
 	end
 end
 
@@ -1687,7 +1691,10 @@ function redzlib:SetTheme(NewTheme, NoSave)
 	if not VerifyTheme(NewTheme) then return end
 
 	redzlib.Save.Theme = NewTheme
-	if not NoSave then SaveJson("redz library V5.json", redzlib.Save) end
+	if not NoSave then
+		print("Saving theme: " .. NewTheme)
+		SaveJson("redz_library_V5.json", redzlib.Save)
+	end
 	Theme = redzlib.Themes[NewTheme]
 
 	Connection:FireConnection("ThemeChanged", NewTheme)
@@ -1714,7 +1721,7 @@ function redzlib:SetScale(NewScale)
 	NewScale = ViewportSize.Y / math.clamp(NewScale, 300, 2000)
 	UIScale, ScreenGui.Scale.Scale = NewScale, NewScale
 	redzlib.Save.Scale = NewScale
-	SaveJson("redz library V5.json", redzlib.Save)
+	SaveJson("redz_library_V5.json", redzlib.Save)
 end
 
 function redzlib:MakeWindow(Configs)
@@ -1869,13 +1876,13 @@ function redzlib:MakeWindow(Configs)
 	ConnectSave(ControlSize1, function()
 		if not Minimized then
 			redzlib.Save.UISize = {MainFrame.Size.X.Offset, MainFrame.Size.Y.Offset}
-			SaveJson("redz library V5.json", redzlib.Save)
+			SaveJson("redz_library_V5.json", redzlib.Save)
 		end
 	end)
 	
 	ConnectSave(ControlSize2, function()
 		redzlib.Save.TabSize = MainScroll.Size.X.Offset
-		SaveJson("redz library V5.json", redzlib.Save)
+		SaveJson("redz_library_V5.json", redzlib.Save)
 	end)
 	
 	local ButtonsFolder = Create("Folder", TopBar, {
@@ -3173,6 +3180,7 @@ function redzlib:MakeWindow(Configs)
 		end
 	})
 
+	print("Applying saved theme: " .. redzlib.Save.Theme)
 	redzlib:SetTheme(redzlib.Save.Theme, true)
 
 	return Window
