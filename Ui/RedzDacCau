@@ -34,7 +34,7 @@ local redzlib = {
 			["Color Theme"] = Color3.fromRGB(255, 69, 0),
 			["Color Text"] = Color3.fromRGB(0, 0, 0),
 			["Color Dark Text"] = Color3.fromRGB(50, 50, 50),
-			["Image"] = "rbxassetid://85772312780607"
+			["Image"] = "rbxassetid://85772312780607" -- Placeholder, thay bằng ID hình ảnh Tet nếu có
 		},
 		Darker = {
 			["Color Hub 1"] = ColorSequence.new({
@@ -1444,7 +1444,7 @@ local function CreateTween(Configs)
 	local NewVal = Configs[3] or Configs.NewVal
 	local Time = Configs[4] or Configs.Time or 0.5
 	local TweenWait = Configs[5] or Configs.wait or false
-	local TweenInfo = TweenInfo.new(Time, Enum.EasingStyle.Sine)
+	local TweenInfo = TweenInfo.new(Time, Enum.EasingStyle.Quint)
 	
 	local Tween = TweenService:Create(Instance, TweenInfo, {[Prop] = NewVal})
 	Tween:Play()
@@ -2094,38 +2094,37 @@ function redzlib:MakeWindow(Configs)
 			Error = Color3.fromRGB(255, 0, 0)
 		}
 
-		local isSmall = NDuration == 1
 		local NotifyFrame = Create("Frame", ScreenGui, {
-			Size = isSmall and UDim2.new(0, 150, 0, 40) or UDim2.new(0, 300, 0, 80),
-			Position = isSmall and UDim2.new(1, 10, 1, -50) or UDim2.new(1, -320, 0, 10),
+			Size = UDim2.new(0, 300, 0, 80),
+			Position = UDim2.new(1, -320, 0, 10),
 			BackgroundColor3 = Theme["Color Hub 2"],
-			BackgroundTransparency = 0.2
-		})Make("Corner", NotifyFrame, UDim.new(0, 8))
+			BackgroundTransparency = 0.1
+		})Make("Corner", NotifyFrame)Make("Stroke", NotifyFrame)
 
 		local TitleLabel = InsertTheme(Create("TextLabel", NotifyFrame, {
-			Size = isSmall and UDim2.new(1, -10, 0, 15) or UDim2.new(1, -10, 0, 20),
-			Position = isSmall and UDim2.new(0, 5, 0, 2) or UDim2.new(0, 5, 0, 5),
+			Size = UDim2.new(1, -10, 0, 20),
+			Position = UDim2.new(0, 5, 0, 5),
 			Text = NTitle,
 			TextColor3 = colors[NType] or Theme["Color Text"],
 			Font = Enum.Font.GothamBold,
-			TextSize = isSmall and 10 or 14,
+			TextSize = 14,
 			BackgroundTransparency = 1
 		}), "Text")
 
 		local TextLabel = InsertTheme(Create("TextLabel", NotifyFrame, {
-			Size = isSmall and UDim2.new(1, -10, 0, 15) or UDim2.new(1, -10, 0, 40),
-			Position = isSmall and UDim2.new(0, 5, 0, 17) or UDim2.new(0, 5, 0, 25),
+			Size = UDim2.new(1, -10, 0, 40),
+			Position = UDim2.new(0, 5, 0, 25),
 			Text = NText,
 			TextColor3 = Theme["Color Dark Text"],
 			Font = Enum.Font.Gotham,
-			TextSize = isSmall and 8 or 12,
+			TextSize = 12,
 			TextWrapped = true,
 			BackgroundTransparency = 1
 		}), "DarkText")
 
-		CreateTween({NotifyFrame, "Position", isSmall and UDim2.new(1, -160, 1, -50) or UDim2.new(1, -10, 0, 10), isSmall and 0.7 or 0.5})
+		CreateTween({NotifyFrame, "Position", UDim2.new(1, -10, 0, 10), 0.5})
 		task.wait(NDuration)
-		CreateTween({NotifyFrame, "Position", isSmall and UDim2.new(1, 10, 1, -50) or UDim2.new(1, -320, 0, 10), 0.5, true})
+		CreateTween({NotifyFrame, "Position", UDim2.new(1, -320, 0, 10), 0.5, true})
 		NotifyFrame:Destroy()
 	end
 	function Window:SelectTab(TabSelect)
@@ -2335,7 +2334,6 @@ function redzlib:MakeWindow(Configs)
 			
 			FButton.Activated:Connect(function()
 				Funcs:FireCallback(Callback)
-				Window:Notify({Title = "Pressed", Text = BName, Duration = 1})
 			end)
 			
 			local Button = {}
@@ -2406,7 +2404,6 @@ function redzlib:MakeWindow(Configs)
 			
 			Button.Activated:Connect(function()
 				SetToggle(not Default)
-				Window:Notify({Title = "Toggled", Text = TName, Duration = 1})
 			end)
 			
 			local Toggle = {}
@@ -3054,7 +3051,7 @@ function redzlib:MakeWindow(Configs)
 			JoinButton.Activated:Connect(function()
 				setclipboard(Invite)
 				if ClickDelay then return end
-
+				
 				ClickDelay = true
 				SetProps(JoinButton, {
 					Text = "Copied to Clipboard",
@@ -3066,7 +3063,6 @@ function redzlib:MakeWindow(Configs)
 					BackgroundColor3 = Color3.fromRGB(50, 150, 50),
 					TextColor3 = Color3.fromRGB(220, 220, 220)
 				})ClickDelay = false
-				Window:Notify({Title = "Copied", Text = "Discord Invite", Duration = 1})
 			end)
 			
 			local DiscordInvite = {}
