@@ -2094,9 +2094,10 @@ function redzlib:MakeWindow(Configs)
 			Error = Color3.fromRGB(255, 0, 0)
 		}
 
+		local isSmall = NDuration == 1
 		local NotifyFrame = Create("Frame", ScreenGui, {
-			Size = UDim2.new(0, 300, 0, 80),
-			Position = UDim2.new(1, -320, 0, 10),
+			Size = isSmall and UDim2.new(0, 200, 0, 50) or UDim2.new(0, 300, 0, 80),
+			Position = isSmall and UDim2.new(1, -220, 0, 10) or UDim2.new(1, -320, 0, 10),
 			BackgroundColor3 = Theme["Color Hub 2"],
 			BackgroundTransparency = 0.1
 		})Make("Corner", NotifyFrame)Make("Stroke", NotifyFrame)
@@ -2334,6 +2335,7 @@ function redzlib:MakeWindow(Configs)
 			
 			FButton.Activated:Connect(function()
 				Funcs:FireCallback(Callback)
+				Window:Notify({Title = "Pressed", Text = BName, Duration = 1})
 			end)
 			
 			local Button = {}
@@ -2404,6 +2406,7 @@ function redzlib:MakeWindow(Configs)
 			
 			Button.Activated:Connect(function()
 				SetToggle(not Default)
+				Window:Notify({Title = "Toggled", Text = TName, Duration = 1})
 			end)
 			
 			local Toggle = {}
@@ -3051,7 +3054,7 @@ function redzlib:MakeWindow(Configs)
 			JoinButton.Activated:Connect(function()
 				setclipboard(Invite)
 				if ClickDelay then return end
-				
+
 				ClickDelay = true
 				SetProps(JoinButton, {
 					Text = "Copied to Clipboard",
@@ -3063,6 +3066,7 @@ function redzlib:MakeWindow(Configs)
 					BackgroundColor3 = Color3.fromRGB(50, 150, 50),
 					TextColor3 = Color3.fromRGB(220, 220, 220)
 				})ClickDelay = false
+				Window:Notify({Title = "Copied", Text = "Discord Invite", Duration = 1})
 			end)
 			
 			local DiscordInvite = {}
