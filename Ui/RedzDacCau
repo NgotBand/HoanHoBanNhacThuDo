@@ -380,7 +380,7 @@ local redzlib = {
 	Save = {
 		UISize = {550, 380},
 		TabSize = 160,
-		Theme = "ForestWhisper"
+		Theme = "Rainbow"
 	},
 	Settings = {},
 	Connection = {},
