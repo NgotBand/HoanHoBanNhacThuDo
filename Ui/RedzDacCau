@@ -9,7 +9,6 @@ local Player = Players.LocalPlayer
 local PlayerMouse = Player:GetMouse()
 
 local redzlib = {
-	RainbowConnection = nil,
 	Themes = {
 		NgotBand = {
 			["Color Hub 1"] = ColorSequence.new({
@@ -360,18 +359,6 @@ local redzlib = {
 			["Color Theme"] = Color3.fromRGB(70, 130, 180),
 			["Color Text"] = Color3.fromRGB(0, 0, 0),
 			["Color Dark Text"] = Color3.fromRGB(50, 50, 50)
-		},
-		Rainbow = {
-			["Color Hub 1"] = ColorSequence.new({
-				ColorSequenceKeypoint.new(0.00, Color3.fromRGB(25, 25, 25)),
-				ColorSequenceKeypoint.new(0.50, Color3.fromRGB(32.5, 32.5, 32.5)),
-				ColorSequenceKeypoint.new(1.00, Color3.fromRGB(25, 25, 25))
-			}),
-			["Color Hub 2"] = Color3.fromRGB(30, 30, 30),
-			["Color Stroke"] = Color3.fromRGB(40, 40, 40),
-			["Color Theme"] = Color3.fromRGB(255, 0, 0), -- Placeholder, will be animated
-			["Color Text"] = Color3.fromRGB(243, 243, 243),
-			["Color Dark Text"] = Color3.fromRGB(180, 180, 180)
 		}
 	},
 	Info = {
@@ -380,7 +367,7 @@ local redzlib = {
 	Save = {
 		UISize = {550, 380},
 		TabSize = 160,
-		Theme = "Rainbow"
+		Theme = "ForestWhisper"
 	},
 	Settings = {},
 	Connection = {},
@@ -3167,11 +3154,6 @@ end
 function redzlib:SetTheme(NewTheme, NoSave)
 	if not VerifyTheme(NewTheme) then return end
 
-	if redzlib.RainbowConnection then
-		redzlib.RainbowConnection:Disconnect()
-		redzlib.RainbowConnection = nil
-	end
-
 	redzlib.Save.Theme = NewTheme
 	if not NoSave then
 		print("Saving theme: " .. NewTheme)
@@ -3197,21 +3179,6 @@ function redzlib:SetTheme(NewTheme, NoSave)
 			Val.Instance[GetColor(Val.Instance)] = Theme["Color Theme"]
 		end
 	end)
-
-	if NewTheme == "Rainbow" then
-		redzlib.RainbowConnection = RunService.Heartbeat:Connect(function()
-			local hue = (tick() % 5) / 5
-			local rainbowColor = Color3.fromHSV(hue, 1, 1)
-			Theme["Color Theme"] = rainbowColor
-			for _, Val in pairs(redzlib.Instances) do
-				if Val.Type == "Theme" then
-					Val.Instance.BackgroundColor3 = rainbowColor
-				elseif Val.Type == "Stroke" then
-					Val.Instance.Color = rainbowColor
-				end
-			end
-		end)
-	end
 end
 
 function redzlib:SetScale(NewScale)
