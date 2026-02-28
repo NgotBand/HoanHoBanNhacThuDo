@@ -3443,7 +3443,7 @@ function redzlib:SetScale(NewScale)
 	SaveJson("redz_library_V5.json", redzlib.Save)
 end
 
-function redzlib:MakeWindow(Configs)
+function redzlib:MakeWin(Configs)
 	local WTitle = Configs[1] or Configs.Name or Configs.Title or "redz Library V5"
 	local WMiniText = Configs[2] or Configs.SubTitle or "by : redz9999"
 	
@@ -3763,9 +3763,9 @@ function redzlib:MakeWindow(Configs)
 	end)
 	
 	local Minimized, SaveSize, WaitClick
-	local Window, FirstTab = {}, false
-	function Window:CloseBtn()
-		local Dialog = Window:Dialog({
+	local Win, FirstTab = {}, false
+	function Win:CloseBtn()
+		local Dialog = Win:Dialog({
 			Title = "Close",
 			Text = "You Want Close Ui?",
 			Options = {
@@ -3776,7 +3776,7 @@ function redzlib:MakeWindow(Configs)
 			}
 		})
 	end
-	function Window:MinimizeBtn()
+	function Win:MinimizeBtn()
 		if WaitClick then return end
 		WaitClick = true
 		
@@ -3797,10 +3797,10 @@ function redzlib:MakeWindow(Configs)
 		
 		WaitClick = false
 	end
-	function Window:Minimize()
+	function Win:Minimize()
 		MainFrame.Visible = not MainFrame.Visible
 	end
-	function Window:AddMinimizeButton(Configs)
+	function Win:AddMinimizeButton(Configs)
 		local Button = MakeDrag(Create("ImageButton", ScreenGui, {
 			Size = UDim2.fromOffset(35, 35),
 			Position = UDim2.fromScale(0.15, 0.15),
@@ -3820,7 +3820,7 @@ function redzlib:MakeWindow(Configs)
 		end
 		
 		SetProps(Button, Configs.Button)
-		Button.Activated:Connect(Window.Minimize)
+		Button.Activated:Connect(Win.Minimize)
 		
 		return {
 			Stroke = Stroke,
@@ -3828,7 +3828,7 @@ function redzlib:MakeWindow(Configs)
 			Button = Button
 		}
 	end
-	function Window:Set(Val1, Val2)
+	function Win:Set(Val1, Val2)
 		if type(Val1) == "string" and type(Val2) == "string" then
 			Title.Text = Val1
 			Title.SubTitle.Text = Val2
@@ -3836,10 +3836,10 @@ function redzlib:MakeWindow(Configs)
 			Title.Text = Val1
 		end
 	end
-	function Window:Dialog(Configs)
+	function Win:Dialog(Configs)
 		if MainFrame:FindFirstChild("Dialog") then return end
 		if Minimized then
-			Window:MinimizeBtn()
+			Win:MinimizeBtn()
 		end
 		
 		local DTitle = Configs[1] or Configs.Title or "Dialog"
@@ -3940,7 +3940,7 @@ function redzlib:MakeWindow(Configs)
 		end)
 		return Dialog
 	end
-	function Window:Notify(Configs)
+	function Win:Notify(Configs)
 		local NTitle = Configs[1] or Configs.Title or "Notification"
 		local NText = Configs[2] or Configs.Text or ""
 		local NDuration = Configs[3] or Configs.Duration or 4
@@ -4118,7 +4118,7 @@ function redzlib:MakeWindow(Configs)
 			NotifyFrame:Destroy()
 		end)
 	end
-	function Window:SelectTab(TabSelect)
+	function Win:SelectTab(TabSelect)
 		if type(TabSelect) == "number" then
 			redzlib.Tabs[TabSelect].func:Enable()
 		else
@@ -4139,7 +4139,7 @@ function redzlib:MakeWindow(Configs)
 		ContainerOrder[Container] = (ContainerOrder[Container] or 0) + 1
 		Instance.LayoutOrder = ContainerOrder[Container]
 	end
-	function Window:MakeTabGroup(Configs)
+	function Win:MakeTabGroup(Configs)
 		local GName = Configs[1] or Configs.Title or "Group"
 		local GIcon = Configs[2] or Configs.Icon or ""
 		GIcon = redzlib:GetIcon(GIcon)
@@ -4224,12 +4224,12 @@ function redzlib:MakeWindow(Configs)
 			cfg = cfg or {}
 			cfg.Parent = ChildrenHolder
 			cfg.Group = GName
-			return Window:MakeTab(cfg)
+			return Win:MakeTab(cfg)
 		end
 		return Group
 	end
 
-	function Window:MakeTab(paste, Configs)
+	function Win:MakeTab(paste, Configs)
 		if type(paste) == "table" then Configs = paste end
 		local TName = Configs[1] or Configs.Title or "Tab!"
 		local TIcon = Configs[2] or Configs.Icon or ""
@@ -5243,10 +5243,10 @@ function redzlib:MakeWindow(Configs)
 		return Tab
 	end
 	
-	CloseButton.Activated:Connect(Window.CloseBtn)
-	MinimizeButton.Activated:Connect(Window.MinimizeBtn)
+	CloseButton.Activated:Connect(Win.CloseBtn)
+	MinimizeButton.Activated:Connect(Win.MinimizeBtn)
 
-	local SettingsTab = Window:MakeTab({
+	local SettingsTab = Win:MakeTab({
 		Title = "Settings",
 		Icon = "settings2"
 	})
@@ -5351,7 +5351,7 @@ function redzlib:MakeWindow(Configs)
 	print("Applying saved theme: " .. redzlib.Save.Theme)
 	redzlib:SetTheme(redzlib.Save.Theme, true)
 
-	return Window
+	return Win
 end
 
 return redzlib
