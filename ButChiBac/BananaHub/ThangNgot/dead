@@ -5284,12 +5284,6 @@ function redzlib:MakeWin(Configs)
 		Logo = "rbxassetid://138072662094067",
 		Invite = "http://discord.gg/V9xq5t5UhM"
 	})
-	SettingsTab:AddDiscordInvite({
-		Title = "Tung Nam | Community",
-		Desc = "Join our discord community to receive information about the next updates and more!",
-		Logo = "rbxassetid://5009915795",
-		Invite = "https://discord.gg/qzW2YVjQMD"
-	})
 	SettingsTab:AddButton({
 		Name = "TikTok Link",
 		Callback = function()
